@@ -6,29 +6,12 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 18:15:57 by ehakam            #+#    #+#             */
-/*   Updated: 2021/12/14 19:32:33 by ehakam           ###   ########.fr       */
+/*   Updated: 2021/12/14 21:03:26 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_errors.h"
 
-bool	m_is_number(char *arg)
-{
-	int 	i;
-
-	if (!arg)
-		return (false);
-	i = 0;
-	while (arg[i] == ' ')
-		i++;
-	while (arg[i] >= '0' && arg[i] <= '9')
-		i++;
-	while (arg[i] == ' ')
-		i++;
-	if (arg[i] != '\0')
-		return (false);
-	return (true);
-}
 
 int		m_errno(int errnoval)
 {

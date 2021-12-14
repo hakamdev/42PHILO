@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 17:37:17 by ehakam            #+#    #+#             */
-/*   Updated: 2021/12/14 19:42:30 by ehakam           ###   ########.fr       */
+/*   Updated: 2021/12/14 23:24:55 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct	s_params
 	size_t	t_sleep;
 	bool	must_eat;
 	size_t	n_eat;
-	pthread_mutex_t	*pmtx;
+	pthread_mutex_t	pmtx;
 }				t_params;
 
 typedef struct	s_philo
@@ -37,7 +37,7 @@ typedef struct	s_philo
 typedef struct	s_fork
 {
 	int				id;
-	pthread_mutex_t	*mtx;
+	pthread_mutex_t	mtx;
 }				t_fork;
 
 typedef struct	s_state
