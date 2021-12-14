@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 17:37:17 by ehakam            #+#    #+#             */
-/*   Updated: 2021/12/14 18:04:24 by ehakam           ###   ########.fr       */
+/*   Updated: 2021/12/14 18:40:01 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 typedef struct	s_params
 {
-	size_t	num_philos;
+	size_t	n_philos;
 	size_t	t_die;
 	size_t	t_eat;
 	size_t	t_sleep;
