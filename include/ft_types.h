@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 17:37:17 by ehakam            #+#    #+#             */
-/*   Updated: 2021/12/14 18:40:01 by ehakam           ###   ########.fr       */
+/*   Updated: 2021/12/14 19:42:30 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,5 @@ typedef struct	s_state
 	t_philo		*philos;
 	t_fork		*forks;
 }				t_state;
-
 
 #endif

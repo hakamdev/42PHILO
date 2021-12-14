@@ -6,17 +6,23 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 17:35:16 by ehakam            #+#    #+#             */
-/*   Updated: 2021/12/14 18:45:30 by ehakam           ###   ########.fr       */
+/*   Updated: 2021/12/14 19:39:10 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_philo.h"
+// TODO: remove these headers;
 
 /*
 ** Initialize all Arguments and check for agrs errors
 */
 t_params	*init_params(int count, char **args)
 {
+	if (count > 6 || count < 3)
+	{
+		m_errno(EARGS);
+		return NULL;
+	}
 	
 }
 
@@ -59,11 +65,14 @@ int			start_supervisor(t_state *state) {
 	
 }
 
-int			start_state_machine(t_state *state) {
+/*
+** Start the Philo Machine...
+*/
+int			start_philo_machine(t_state *state) {
 	
 }
 
-int	main(int ac, char **av)
+int			main(int ac, char **av)
 {
 	t_philo		*philos;
 	t_fork		*forks;

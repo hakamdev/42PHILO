@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 18:08:28 by ehakam            #+#    #+#             */
-/*   Updated: 2021/12/14 18:30:53 by ehakam           ###   ########.fr       */
+/*   Updated: 2021/12/14 19:32:41 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 
 int		m_errno(int errnoval);
 bool 	m_is_error(void);
-int		m_put_error();
+int		m_put_error(void);
+bool	m_is_number(char *arg);
 
 #endif

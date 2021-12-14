@@ -6,13 +6,31 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 18:15:57 by ehakam            #+#    #+#             */
-/*   Updated: 2021/12/14 18:30:34 by ehakam           ###   ########.fr       */
+/*   Updated: 2021/12/14 19:32:33 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_errors.h"
 
-int	m_errno(int errnoval)
+bool	m_is_number(char *arg)
+{
+	int 	i;
+
+	if (!arg)
+		return (false);
+	i = 0;
+	while (arg[i] == ' ')
+		i++;
+	while (arg[i] >= '0' && arg[i] <= '9')
+		i++;
+	while (arg[i] == ' ')
+		i++;
+	if (arg[i] != '\0')
+		return (false);
+	return (true);
+}
+
+int		m_errno(int errnoval)
 {
 	static int errno;
 
@@ -21,7 +39,7 @@ int	m_errno(int errnoval)
 	return (errno);
 }
 
-bool m_is_error(void)
+bool	m_is_error(void)
 {
 	return (m_errno(EVOID) != ENOERROR);
 }
@@ -47,4 +65,3 @@ int		m_put_error()
 		dprintf(2, "Error\n%s", MSG_EARGS);
 	return (1);
 }
-
