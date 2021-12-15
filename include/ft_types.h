@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 17:37:17 by ehakam            #+#    #+#             */
-/*   Updated: 2021/12/14 23:24:55 by ehakam           ###   ########.fr       */
+/*   Updated: 2021/12/15 01:58:49 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ typedef struct	s_params
 	pthread_mutex_t	pmtx;
 }				t_params;
 
-typedef struct	s_philo
-{
-	int			id;
-	pthread_t	*thread;
-}				t_philo;
+// typedef struct	s_philo
+// {
+// 	int			id;
+// 	pthread_t	*thread;
+// }				t_philo;
 
 typedef struct	s_fork
 {
@@ -43,9 +43,9 @@ typedef struct	s_fork
 typedef struct	s_state
 {
 	int			id;
-	t_params	*args;
-	t_philo		*philos;
+	t_params	*params;
 	t_fork		*forks;
+	pthread_t	philo_thread;
 }				t_state;
 
 #endif
