@@ -6,15 +6,16 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 18:08:28 by ehakam            #+#    #+#             */
-/*   Updated: 2021/12/14 21:04:07 by ehakam           ###   ########.fr       */
+/*   Updated: 2021/12/16 22:44:24 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_ERRORS_H
 # define FT_ERRORS_H
 
-#include <stdbool.h>
-#include <stdio.h>
+# include <stdbool.h>
+# include <stdio.h>
+# include <unistd.h>
 
 # define EVOID -1
 # define ENOERROR 0
