@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 17:35:16 by ehakam            #+#    #+#             */
-/*   Updated: 2021/12/15 02:00:19 by ehakam           ###   ########.fr       */
+/*   Updated: 2021/12/16 19:40:02 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ t_params	*init_params(int count, char **args)
 	}
 	params->must_eat = count == 6;
 	params->n_philos = m_aton(args[1]);
-	params->t_die = m_aton(args[2]);
-	params->t_eat = m_aton(args[3]);
-	params->t_sleep = m_aton(args[4]);
+	params->t_die = m_aton(args[2]) * 1000;
+	params->t_eat = m_aton(args[3])  * 1000;
+	params->t_sleep = m_aton(args[4]) * 1000;
 	if (params->must_eat)
 		params->n_eat = m_aton(args[5]);
 	return (params);
@@ -136,6 +136,8 @@ t_state		*init_state(t_params *params, t_fork *forks)
 {
 	size_t		i;
 	t_state		*state;
+	bool		is_dead;
+	useconds_t	start_time;
 	
 	state = (t_state *)malloc(sizeof(t_state) * params->n_philos);
 	if (!state)
@@ -145,16 +147,21 @@ t_state		*init_state(t_params *params, t_fork *forks)
 		return (NULL);
 	}
 	i = 0;
+	is_dead = false;
+	start_time = get_current_time();
 	while (i < params->n_philos)
 	{
 		state[i].id = i;
 		state[i].params = params;
 		state[i].forks = forks;
+		state[i].current_state = STATE_NONE;
+		state[i].last_meal_time = get_current_time();
+		state[i].start_time = &start_time;
+		state[i].is_dead = &is_dead;
 		++i;
 	}
 	return (state);
 }
-
 
 /*
 ** Start threading...
@@ -164,16 +171,11 @@ int			start_threads(t_state *state)
 	size_t			i;
 	const size_t	count = state->params->n_philos;
 
-	dprintf(2, "Staring threads\n");
-
 	i = 0;
 	while (i < count) {
-		dprintf(2, "Staring thread %zu\n", i);
-		// m_sleep(6000);
 		pthread_create(&state->philo_thread, NULL, &routine, &state[i++]);
 	}
-	while(1);
-	// start_supervisor_thread(state);
+	start_supervisor_thread(state);
 	return 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 18:01:12 by ehakam            #+#    #+#             */
-/*   Updated: 2021/12/15 01:58:49 by ehakam           ###   ########.fr       */
+/*   Updated: 2021/12/16 18:49:32 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@
 # include "ft_types.h"
 # include "ft_errors.h"
 
+# define STATE_NONE -1
 # define STATE_DEAD 0
 # define STATE_EATING 1
 # define STATE_SLEEPING 2
 # define STATE_THINKING 3
+# define STATE_TAKE_FORK 4
 
 size_t		m_aton(const char *str);
 bool		m_is_number(char *arg);
@@ -45,7 +47,6 @@ void		destroy_forks(t_fork *forks, int last_index);
 
 void		*routine(void *params);
 void		*super_routine(void *params);
-
 
 useconds_t	get_current_time();
 useconds_t	get_elapsed_since(useconds_t usec);

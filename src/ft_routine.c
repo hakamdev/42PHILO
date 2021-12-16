@@ -6,71 +6,128 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 23:55:48 by ehakam            #+#    #+#             */
-/*   Updated: 2021/12/15 02:14:00 by ehakam           ###   ########.fr       */
+/*   Updated: 2021/12/16 19:47:03 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_philo.h"
 
-void		take_forks(t_fork *forks, int left, int right)
+void		take_forks(t_state *state)
 {
-	pthread_mutex_lock(&forks[left].mtx);
-	pthread_mutex_lock(&forks[right].mtx);
+	const int left = state->id;
+	const int right = (state->id + 1) % state->params->n_philos;
+
+	if (state->id % 2 == 0)
+	{
+		pthread_mutex_lock(&state->forks[left].mtx);
+		state->current_state = STATE_TAKE_FORK;
+		log_state(STATE_TAKE_FORK, state);
+		pthread_mutex_lock(&state->forks[right].mtx);
+		state->current_state = STATE_TAKE_FORK;
+		log_state(STATE_TAKE_FORK, state);
+	}
+	else
+	{
+		pthread_mutex_lock(&state->forks[right].mtx);
+		state->current_state = STATE_TAKE_FORK;
+		log_state(STATE_TAKE_FORK, state);
+		pthread_mutex_lock(&state->forks[left].mtx);
+		state->current_state = STATE_TAKE_FORK;
+		log_state(STATE_TAKE_FORK, state);
+	}
 }
 
-void		release_forks(t_fork *forks, int left, int right)
+void		release_forks(t_state *state)
 {
-	pthread_mutex_unlock(&forks[left].mtx);
-	pthread_mutex_unlock(&forks[right].mtx);
+	const int left = state->id;
+	const int right = (state->id + 1) % state->params->n_philos;
+
+	if (state->id % 2 == 0)
+	{
+		pthread_mutex_unlock(&state->forks[left].mtx);
+		pthread_mutex_unlock(&state->forks[right].mtx);
+	}
+	else
+	{
+		pthread_mutex_unlock(&state->forks[right].mtx);
+		pthread_mutex_unlock(&state->forks[left].mtx);
+	}
 }
 
 void		ro_eat(t_state *state)
 {
-	const size_t	count = state->params->n_philos;
+	const size_t count = state->params->n_philos;
 
-	if (state->id % 2 == 0)
-		m_sleep(state->params->t_eat);
+	take_forks(state);
+	state->last_meal_time = get_current_time();
+	state->current_state = STATE_EATING;
 	log_state(STATE_EATING, state);
 	m_sleep(state->params->t_eat);
-	take_forks(state->forks, state->id, (state->id + 1) % count);
-	m_sleep(state->params->t_eat);
-	release_forks(state->forks, state->id, (state->id + 1) % count);
+	release_forks(state);
 }
 
-void		ro_eat(t_state *state)
+void		ro_sleep(t_state *state)
 {
-	const size_t	count = state->params->n_philos;
+	const size_t count = state->params->n_philos;
 
-	if (state->id % 2 == 0)
-		m_sleep(state->params->t_eat);
+	state->current_state = STATE_SLEEPING;
 	log_state(STATE_SLEEPING, state);
-	m_sleep(state->params->t_eat);
-	take_forks(state->forks, state->id, (state->id + 1) % count);
-	m_sleep(state->params->t_eat);
-	release_forks(state->forks, state->id, (state->id + 1) % count);
+	m_sleep(state->params->t_sleep);
+}
+
+void		ro_think(t_state *state)
+{
+	state->current_state = STATE_THINKING;
+	log_state(STATE_THINKING, state);
 }
 
 /*
 ** Routine...
 ** prototype: void *(*start_routine)(void *)
 */
-void		*routine(void *params)
+void		*routine(void *args)
 {
-	t_state *state = (t_state *)params;
-	pthread_mutex_lock(&state->params->pmtx);
-	log_state(STATE_DEAD, state);
-	log_state(STATE_EATING, state);
-	log_state(STATE_SLEEPING, state);
-	log_state(STATE_THINKING, state);
-	pthread_mutex_unlock(&state->params->pmtx);
+	t_state *state = (t_state *)args;
+	size_t	n_eat;
+
+	n_eat = 0;
+	if (state->params->must_eat)
+	{
+		while (!(*state->is_dead) && n_eat < state->params->n_eat)
+		{
+			ro_eat(state);
+			n_eat++;
+			ro_sleep(state);
+			ro_think(state);
+		}
+	} else
+	{
+		while (!(*state->is_dead))
+		{
+			ro_eat(state);
+			ro_sleep(state);
+			ro_think(state);
+		}
+	}
 	return state;
 }
 
-void		*super_routine(void *params)
+void		*super_routine(void *args)
 {
-	t_state *state = (t_state *)params;
-	pthread_mutex_lock(&state->params->pmtx);
-	dprintf(2, "THREAD %d STARTED\n", state->id);
-	pthread_mutex_unlock(&state->params->pmtx);
+	size_t		i;
+	t_state *state = (t_state *)args;
+
+	i = 0;
+	while (i < state->params->n_philos)
+	{
+		if (get_elapsed_since(state[i].last_meal_time) >= state->params->t_die)
+			{
+				log_state(STATE_DEAD, &state[i]);
+				*state->is_dead = true;
+				break;
+			}
+		++i;
+		i %= state->params->n_philos;
+	}
 	return state;
 }
