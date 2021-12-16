@@ -6,7 +6,7 @@
 /*   By: ehakam <ehakam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 17:35:16 by ehakam            #+#    #+#             */
-/*   Updated: 2021/12/16 19:40:02 by ehakam           ###   ########.fr       */
+/*   Updated: 2021/12/16 20:16:22 by ehakam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,12 +152,13 @@ t_state		*init_state(t_params *params, t_fork *forks)
 	while (i < params->n_philos)
 	{
 		state[i].id = i;
+		state[i].finished_all_meals = false;
+		state[i].last_meal_time = get_current_time();
 		state[i].params = params;
 		state[i].forks = forks;
-		state[i].current_state = STATE_NONE;
-		state[i].last_meal_time = get_current_time();
+		// state[i].current_state = STATE_NONE;
 		state[i].start_time = &start_time;
-		state[i].is_dead = &is_dead;
+		// state[i].is_dead = &is_dead;
 		++i;
 	}
 	return (state);
